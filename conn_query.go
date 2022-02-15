@@ -60,6 +60,10 @@ func (c *connect) query(ctx context.Context, release func(*connect, error), quer
 
 	go func() {
 		onProcess.data = func(b *proto.Block) {
+			if b.Rows() == 0 {
+				return
+			}
+
 			stream <- b
 		}
 		err := c.process(ctx, onProcess)
